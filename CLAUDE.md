@@ -4,118 +4,158 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-This is the **n8n-skills** repository - a collection of Claude Code skills designed to teach AI assistants how to build flawless n8n workflows using the n8n-mcp MCP server.
+This is the **langflow-skills** repository - a collection of Claude Code skills designed to teach AI assistants how to build Langflow AI applications using the Langflow REST API.
 
-**Repository**: https://github.com/czlonkowski/n8n-skills
+**Repository**: https://github.com/Chrysaliz333/langflow-skills
 
-**Purpose**: 7 complementary skills that provide expert guidance on using n8n-mcp MCP tools effectively for building n8n workflows.
+**Adapted From**: [n8n-skills](https://github.com/czlonkowski/n8n-skills) - Originally Conceived by Romuald Członkowski ([www.aiadvisors.pl/en](https://www.aiadvisors.pl/en))
+
+**Purpose**: 6 complementary skills that provide expert guidance on building Langflow flows programmatically via REST API.
 
 **Architecture**:
-- **n8n-mcp MCP Server**: Provides data access (800+ nodes, validation, templates, workflow management)
-- **Claude Skills**: Provides expert guidance on HOW to use MCP tools
-- **Together**: Expert workflow builder with progressive disclosure
+- **Langflow REST API**: Provides programmatic access to flows, components, builds, and execution
+- **Claude Skills**: Provides expert guidance on HOW to use the API effectively
+- **Together**: Expert Langflow application builder with progressive disclosure
 
 ## Repository Structure
 
 ```
-n8n-skills/
-├── README.md              # Project overview with video
-├── LICENSE                # MIT License
-├── skills/                # Individual skill implementations
-│   ├── n8n-expression-syntax/
-│   ├── n8n-mcp-tools-expert/
-│   ├── n8n-workflow-patterns/
-│   ├── n8n-validation-expert/
-│   ├── n8n-node-configuration/
-│   ├── n8n-code-javascript/
-│   └── n8n-code-python/
-├── evaluations/           # Test scenarios for each skill
-├── docs/                  # Documentation
-├── dist/                  # Distribution packages
-└── .claude-plugin/        # Claude Code plugin configuration
+langflow-skills/
+├── README.md                         # Project overview
+├── LICENSE                           # MIT License
+├── MIGRATION_ANALYSIS.md             # n8n → Langflow adaptation analysis
+├── CLAUDE.md                         # This file
+├── skills/                           # Individual skill implementations
+│   ├── langflow-api-expert/          # API usage patterns (HIGHEST PRIORITY)
+│   ├── langflow-component-config/    # Component configuration
+│   ├── langflow-custom-components/   # Custom Python components
+│   ├── langflow-flow-patterns/       # Architectural patterns
+│   ├── langflow-build-expert/        # Build validation
+│   └── langflow-agent-patterns/      # AI agent patterns
+├── evaluations/                      # Test scenarios for each skill
+├── docs/                             # Documentation
+└── dist/                             # Distribution packages
 ```
 
-## The 7 Skills
+## The 6 Skills
 
-### 1. n8n Expression Syntax
-- Teaches correct n8n expression syntax ({{}} patterns)
-- Covers common mistakes and fixes
-- Critical gotcha: Webhook data under `$json.body`
+### 1. Langflow API Expert (HIGHEST PRIORITY)
+- Teaches how to use Langflow REST API effectively
+- Covers endpoints: `/api/v1/flows/`, `/api/v1/build/`, `/run`
+- Authentication with x-api-key
+- Flow CRUD operations
+- Build process management
 
-### 2. n8n MCP Tools Expert (HIGHEST PRIORITY)
-- Teaches how to use n8n-mcp MCP tools effectively
-- Covers unified tools: `get_node`, `validate_node`, `search_nodes`
-- Workflow management with `n8n_update_partial_workflow`
-- New: `n8n_deploy_template`, `n8n_workflow_versions`, `activateWorkflow`
+### 2. Langflow Component Configuration
+- Component input/output configuration
+- Field types: StrInput, IntInput, SecretStrInput, BoolInput, etc.
+- Component templates and parameters
+- LangChain integration
 
-### 3. n8n Workflow Patterns
-- Teaches proven workflow architectural patterns
-- 5 patterns: webhook, HTTP API, database, AI, scheduled
+### 3. Langflow Custom Components
+- Creating custom Python components
+- Component class structure
+- Build method implementation
+- Standard library only (no pip packages)
 
-### 4. n8n Validation Expert
-- Interprets validation errors and guides fixing
-- Handles false positives and validation loops
-- Auto-fix with `n8n_autofix_workflow`
+### 4. Langflow Flow Patterns
+- Proven AI architectural patterns
+- 5 patterns: Chat, RAG, Agent, API Integration, Multi-Agent
+- Component connection best practices
 
-### 5. n8n Node Configuration
-- Operation-aware node configuration guidance
-- Property dependencies and common patterns
+### 5. Langflow Build Expert
+- Build process validation
+- Error interpretation and fixing
+- Build event streaming
+- Common failure patterns
 
-### 6. n8n Code JavaScript
-- Write JavaScript in n8n Code nodes
-- Data access patterns, `$helpers`, DateTime
+### 6. Langflow Agent Patterns
+- Multi-agent architectures
+- Tool-calling patterns
+- Memory management
+- RAG implementation
 
-### 7. n8n Code Python
-- Write Python in n8n Code nodes
-- Limitations awareness (no external libraries)
+## Key API Endpoints
 
-## Key MCP Tools
+The Langflow REST API provides these core endpoints:
 
-The n8n-mcp server provides these unified tools:
+### Flow Management
+- `POST /api/v1/flows/` - Create new flows
+- `GET /api/v1/flows/` - List flows
+- `GET /api/v1/flows/{id}` - Get flow details
+- `PATCH /api/v1/flows/{id}` - Update flow
+- `DELETE /api/v1/flows/{id}` - Delete flow
 
-### Node Discovery
-- `search_nodes` - Find nodes by keyword
-- `get_node` - Unified node info with detail levels (minimal, standard, full) and modes (info, docs, search_properties, versions)
+### Build Process
+- `POST /v1/build/{flow_id}/flow` - Start build
+- `GET /v1/build/{job_id}/events` - Stream build events
+- `POST /v1/build/{job_id}/cancel` - Cancel build
 
-### Validation
-- `validate_node` - Unified validation with modes (minimal, full) and profiles (runtime, ai-friendly, strict)
-- `validate_workflow` - Complete workflow validation
+### Execution
+- `POST /run` - Execute flow with inputs/tweaks
+- Supports session management
+- Returns outputs, artifacts, logs
 
-### Workflow Management
-- `n8n_create_workflow` - Create new workflows
-- `n8n_update_partial_workflow` - Incremental updates (17 operation types including `activateWorkflow`)
-- `n8n_validate_workflow` - Validate by ID
-- `n8n_autofix_workflow` - Auto-fix common issues
-- `n8n_deploy_template` - Deploy template to n8n instance
-- `n8n_workflow_versions` - Version history and rollback
-- `n8n_test_workflow` - Test execution
-- `n8n_executions` - Manage executions
-
-### Templates
-- `search_templates` - Multiple modes (keyword, by_nodes, by_task, by_metadata)
-- `get_template` - Get template details
-
-### Guides
-- `tools_documentation` - Meta-documentation for all tools
-- `ai_agents_guide` - AI agent workflow guidance
+### Components
+- Component types discovered through API or docs
+- Components configured via flow data structure
+- Python-based with LangChain integration
 
 ## Important Patterns
 
-### Most Common Tool Usage Pattern
+### Common API Pattern
 ```
-search_nodes → get_node (18s avg between steps)
-```
-
-### Most Common Validation Pattern
-```
-n8n_update_partial_workflow → n8n_validate_workflow (7,841 occurrences)
-Avg 23s thinking, 58s fixing
+1. Create flow (POST /api/v1/flows/)
+2. Build flow (POST /v1/build/{flow_id}/flow)
+3. Monitor build (GET /v1/build/{job_id}/events)
+4. Execute flow (POST /run)
 ```
 
-### Most Used Tool
+### Component Structure
+```python
+class CustomComponent(Component):
+    display_name = "Component Name"
+    description = "Component description"
+
+    inputs = [
+        StrInput(name="input_name", display_name="Input Label"),
+        # ... more inputs
+    ]
+
+    def build(self):
+        # Build logic
+        return result
 ```
-n8n_update_partial_workflow (38,287 uses, 99.0% success)
-Avg 56 seconds between edits
+
+### Flow Data Structure
+```json
+{
+  "name": "Flow Name",
+  "data": {
+    "nodes": [
+      {
+        "id": "ComponentType-uuid",
+        "type": "genericNode",
+        "data": {
+          "type": "ComponentType",
+          "node": {
+            "template": {
+              "param_name": {"value": "param_value"}
+            }
+          }
+        }
+      }
+    ],
+    "edges": [
+      {
+        "source": "source-id",
+        "target": "target-id",
+        "sourceHandle": "output_name",
+        "targetHandle": "input_name"
+      }
+    ]
+  }
+}
 ```
 
 ## Working with This Repository
@@ -125,43 +165,85 @@ Avg 56 seconds between edits
 2. Write SKILL.md with frontmatter
 3. Add reference files as needed
 4. Create 3+ evaluations in `evaluations/`
-5. Test thoroughly before committing
+5. Test against real Langflow instance
 
 ### Skill Activation
 Skills activate automatically when queries match their description triggers:
-- "How do I write n8n expressions?" → n8n Expression Syntax
-- "Find me a Slack node" → n8n MCP Tools Expert
-- "Build a webhook workflow" → n8n Workflow Patterns
+- "How do I use the Langflow API?" → Langflow API Expert
+- "Configure OpenAI component" → Langflow Component Configuration
+- "Build a RAG app" → Langflow Flow Patterns + Langflow Agent Patterns
+- "Build failed" → Langflow Build Expert
+- "Create custom component" → Langflow Custom Components
 
 ### Cross-Skill Integration
 Skills are designed to work together:
-- Use n8n Workflow Patterns to identify structure
-- Use n8n MCP Tools Expert to find nodes
-- Use n8n Node Configuration for setup
-- Use n8n Expression Syntax for data mapping
-- Use n8n Code JavaScript/Python for custom logic
-- Use n8n Validation Expert to validate
+- Use Langflow API Expert to understand endpoints
+- Use Langflow Flow Patterns to identify architecture
+- Use Langflow Component Configuration for setup
+- Use Langflow Custom Components for extensions
+- Use Langflow Build Expert to validate
+- Use Langflow Agent Patterns for AI-specific patterns
 
 ## Requirements
 
-- n8n-mcp MCP server installed and configured
+- Langflow installed and running
+- API key configured
 - Claude Code, Claude.ai, or Claude API access
-- Understanding of n8n workflow concepts
+- Understanding of Python and LLM concepts
 
 ## Distribution
 
 Available as:
 1. **GitHub Repository**: Full source code and documentation
-2. **Claude Code Plugin**: `npm install @anthropic/claude-code-plugin-n8n-skills`
-3. **Individual Skill Uploads**: For Claude.ai users
+2. **Manual Installation**: Copy to ~/.claude/skills/
 
 ## Credits
 
-Conceived by Romuald Członkowski - [www.aiadvisors.pl/en](https://www.aiadvisors.pl/en)
+**Adapted by**: Liz (Chrysaliz333)
+**Originally Conceived by**: Romuald Członkowski - [www.aiadvisors.pl/en](https://www.aiadvisors.pl/en)
+**Original Project**: [n8n-skills](https://github.com/czlonkowski/n8n-skills)
 
-Part of the n8n-mcp project.
+## Writing Style
+
+### Anti-AI-Voice Rules
+
+**NEVER use these words in any documentation, commit messages, or skill content:**
+- "production-ready", "robust", "scalable", "streamline", "leverage"
+- "cutting-edge", "best-in-class", "enterprise-grade", "world-class"
+- "innovative", "empower", "synergy", "holistic"
+- "comprehensive solution", "game-changing"
+
+**NEVER use these phrases:**
+- "It's important to note", "It's worth mentioning"
+- "Great question!", "Absolutely!", "Fantastic"
+- "depending on your specific use case"
+
+**DO instead:**
+- Write plainly and directly
+- State facts without marketing language
+- Use specific nouns over abstract ones
+- Keep it conversational but professional
 
 ## License
 
 MIT License - See LICENSE file for details.
-- Add to every commit and PR: Conceived by Romuald Członkowski - and then link to www.aiadvisors.pl/en. Don't add it in conversations
+
+## Development Notes
+
+### Key Differences from n8n-skills
+1. **REST API** instead of MCP server
+2. **Python-centric** (no JavaScript alternative)
+3. **Build process** is critical
+4. **AI-focused** patterns (agents, RAG, etc.)
+5. **Component-based** instead of node-based
+
+### Testing Against Langflow
+- Requires running Langflow instance
+- API key for authentication
+- Test flows should be simple and self-contained
+- Clean up test flows after evaluations
+
+### Documentation Sources
+- https://docs.langflow.org - Official Langflow docs
+- https://github.com/langflow-ai/langflow - Source code
+- Context7 documentation (use when developing)

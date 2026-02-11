@@ -1,35 +1,40 @@
 {
-  "name": "n8n-mcp-skills",
-  "description": "Expert skills for building n8n workflows",
+  "name": "langflow-skills",
+  "description": "Expert skills for building Langflow AI applications",
   "owner": {
+    "name": "Liz (Chrysaliz333)",
+    "url": "https://github.com/Chrysaliz333/langflow-skills"
+  },
+  "original_author": {
     "name": "Romuald Członkowski",
-    "url": "https://www.aiadvisors.pl/en"
+    "url": "https://www.aiadvisors.pl/en",
+    "note": "Adapted from n8n-skills"
   },
   "plugins": [
     {
-      "name": "n8n-mcp-skills",
+      "name": "langflow-skills",
       "source": "./",
-      "description": "Complete bundle: 7 expert skills for building flawless n8n workflows using n8n-mcp MCP server. Includes skills for expression syntax, MCP tools usage, workflow patterns, validation, node configuration, JavaScript code, and Python code.",
+      "description": "Complete bundle: 6 expert skills for building production-ready Langflow AI applications. Includes skills for API usage, component configuration, custom components, flow patterns, build validation, and agent architectures.",
       "version": "1.0.0",
       "author": {
-        "name": "Romuald Członkowski",
-        "url": "https://www.aiadvisors.pl/en"
+        "name": "Liz (Chrysaliz333)",
+        "url": "https://github.com/Chrysaliz333/langflow-skills"
       },
-      "category": "automation",
+      "category": "ai",
       "keywords": [
-        "n8n",
-        "workflow",
-        "mcp",
-        "automation",
-        "validation",
-        "expressions",
-        "code",
-        "javascript",
+        "langflow",
+        "ai",
+        "llm",
+        "rag",
+        "agents",
+        "langchain",
+        "workflows",
         "python",
+        "components",
         "skills"
       ],
-      "homepage": "https://github.com/czlonkowski/n8n-skills",
-      "repository": "https://github.com/czlonkowski/n8n-skills",
+      "homepage": "https://github.com/Chrysaliz333/langflow-skills",
+      "repository": "https://github.com/Chrysaliz333/langflow-skills",
       "license": "MIT"
     }
   ]
